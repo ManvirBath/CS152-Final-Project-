@@ -28,6 +28,7 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        print("jumping: " + jumping + " grounded: " + grounded);
         ApplyMovement();
         TestCollisions();
     }
@@ -37,7 +38,7 @@ public class CharacterController : MonoBehaviour
     {
         if (grounded)
         {
-            grounded = false;
+            jumping = true;
             vel.y = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics2D.gravity.y));
         }
         //transform.Translate(vel * Time.deltaTime);
@@ -46,7 +47,7 @@ public class CharacterController : MonoBehaviour
     public void Move(float left_or_right)
     {
         float acceleration = grounded ? walkAcceleration : airAcceleration;
-        float deceleration = grounded ? groundDeceleration : 0;
+        float deceleration = groundDeceleration;
 
         if (left_or_right != 0)
         {
@@ -54,13 +55,20 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
-            vel.x = Mathf.MoveTowards(vel.x, 0, deceleration * Time.deltaTime);
+            if (!grounded && jumping)
+            {
+                vel.x = Mathf.MoveTowards(vel.x, 0, 0);
+            }
+            else
+            {
+                vel.x = Mathf.MoveTowards(vel.x, 0, deceleration * Time.deltaTime);
+            }
         }
     }
 
     private void ApplyMovement()
     {
-        if (grounded)
+        if (grounded && !jumping)
         {
             vel.y = 0;
         }
@@ -93,6 +101,7 @@ public class CharacterController : MonoBehaviour
             }
             Vector2 expected = new Vector2(0, (boxCollider.size.y / 2) - scalar);
             transform.Translate(expected);
+            jumping = false;
             grounded = true;
         }
 

@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
         // control
         moveInput = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButton("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             // Calculate the velocity required to achieve the target jump height.
             character.Jump();
