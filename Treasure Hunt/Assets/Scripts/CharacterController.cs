@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
+    int layerMask = 1;
     float speed = 6;
     float walkAcceleration = 75;
     float airAcceleration = 55;
@@ -23,12 +24,14 @@ public class CharacterController : MonoBehaviour
     void Start()
     {
         boxCollider = gameObject.GetComponent<CapsuleCollider2D>();
+        layerMask = layerMask << LayerMask.NameToLayer("Characters");
+        layerMask = ~layerMask;
     }
 
     // Update is called once per frame
     void Update()
     {
-        print("jumping: " + jumping + " grounded: " + grounded);
+        //print("jumping: " + jumping + " grounded: " + grounded);
         ApplyMovement();
         TestCollisions();
     }
@@ -83,8 +86,8 @@ public class CharacterController : MonoBehaviour
         boxCollider.enabled = false;
         Vector2 corner_left = new Vector2(transform.position.x - (boxCollider.size.y / 2), transform.position.y);
         Vector2 corner_right = new Vector2(transform.position.x + (boxCollider.size.y / 2), transform.position.y);
-        RaycastHit2D targL = Physics2D.Raycast(corner_left, Vector2.down);
-        RaycastHit2D targR = Physics2D.Raycast(corner_right, Vector2.down);
+        RaycastHit2D targL = Physics2D.Raycast(corner_left, Vector2.down, Mathf.Infinity, layerMask);
+        RaycastHit2D targR = Physics2D.Raycast(corner_right, Vector2.down, Mathf.Infinity, layerMask);
         boxCollider.enabled = true;
         grounded = false;
 
@@ -110,7 +113,7 @@ public class CharacterController : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapBoxAll(transform.position, boxCollider.size, 0);
         foreach (Collider2D hit in hits)
         {
-            if (hit == boxCollider) continue;
+            if (hit == boxCollider || hit.gameObject.GetComponent<CharacterController>() != null) continue;
 
             ColliderDistance2D colliderDistance = hit.Distance(boxCollider);
 
