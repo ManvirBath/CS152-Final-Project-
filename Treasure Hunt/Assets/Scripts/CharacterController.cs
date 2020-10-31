@@ -7,12 +7,23 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    int layerMask = 1;
-    float speed = 6;
-    float walkAcceleration = 75;
-    float airAcceleration = 55;
-    float groundDeceleration = 70;
-    float jumpHeight = 3;
+    private int layerMask = 1;
+    private float speed = 6;
+    public float WalkSpeed
+    {
+        get { return speed; }
+        set { speed = value; }
+    }
+    private float walkAcceleration = 75;
+    private float airAcceleration = 55;
+    private float groundDeceleration = 70;
+    private float jumpHeight = 3;
+    public float JumpHeight
+    {
+        get { return jumpHeight; }
+        set { jumpHeight = value; }
+    }
+
 
     private CapsuleCollider2D boxCollider;
     private Vector2 vel;
