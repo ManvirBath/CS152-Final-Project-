@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
         character.WalkSpeed = walkSpeed;
         character.JumpHeight = jumpHeight;
         animCtrl = gameObject.GetComponent<CharSpriteAnimController>();
-
+        
         // Add animation controllers to character
         animCtrl.AddAnimController("Idle", idleAnim);
         animCtrl.AddAnimController("Walk", walkAnim);

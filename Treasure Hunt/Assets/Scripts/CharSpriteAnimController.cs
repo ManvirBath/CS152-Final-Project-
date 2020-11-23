@@ -12,7 +12,7 @@ using UnityEngine;
 /// </summary>
 public class CharSpriteAnimController : MonoBehaviour
 {
-    private Dictionary<string, RuntimeAnimatorController> animations;
+    private Dictionary<string, RuntimeAnimatorController> animations = new Dictionary<string, RuntimeAnimatorController>();
     private Animator currAnimator;
     public Animator AnimController
     {
@@ -21,7 +21,6 @@ public class CharSpriteAnimController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        animations = new Dictionary<string, RuntimeAnimatorController>();
         currAnimator = gameObject.transform.Find("Sprite").GetComponent<Animator>();
     }
 
